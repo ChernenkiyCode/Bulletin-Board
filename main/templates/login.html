@@ -1,0 +1,23 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block rubrics_navigation %} {% endblock %}
+
+{% block headline %}Login{% endblock %}
+
+{% block content %}
+    <div class="row my-4">
+        <div class="col-md-6 mx-auto">
+            <h2 class="mb-4">Login form</h2>
+            <form method="POST" action="">{% csrf_token %}
+                <div class="form-group">
+                    {{form.as_p}}
+                </div>
+                <button class="btn btn-primary" type="submit" value="submit">Login</button>
+                <a type="button" class="btn btn-warning" href="{% url 'registration' %}">Sign up</a>
+                <a type="button" class="btn btn-danger" href="{% url 'password_reset' %}">Reset password</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

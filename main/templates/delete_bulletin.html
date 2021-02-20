@@ -1,0 +1,18 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Delete bulletin{% endblock %}
+
+{% block rubrics_navigation %} {% endblock %}
+
+{% block headline %}Delete bulletin{% endblock %}
+
+{% block content %}
+<div class="row my-4">
+    <div class="col-md-6 mx-auto">
+        <h2 class="mb-4">Are you sure you want to delete {{object.title}} bulletin?</h2>
+        <form method="post">{% csrf_token %}
+            <button class="btn btn-danger" type="submit" value="Confirm">Delete</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

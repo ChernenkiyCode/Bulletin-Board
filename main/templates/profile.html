@@ -1,0 +1,43 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block rubrics_navigation %} {% endblock %}
+
+{% block headline %}User profile{% endblock %}
+
+{% block content %}
+    <dl class="row">
+        <dt class="col-sm-3">Username</dt>
+        <dd class="col-sm-9">{{user.username}}</dd>
+    
+        <dt class="col-sm-3">First name</dt>
+        <dd class="col-sm-9">
+            {% if user.first_name %}
+                {{user.first_name}}
+            {% else %}
+                --------------------
+            {% endif %}
+        </dd>
+    
+        <dt class="col-sm-3">Last name</dt>
+        <dd class="col-sm-9">
+            {% if user.last_name %}
+                {{user.last_name}}
+            {% else %}
+                --------------------
+            {% endif %}
+        </dd>
+    
+        <dt class="col-sm-3 text-truncate">Email</dt>
+        <dd class="col-sm-9">{{user.email}}</dd>
+        {% if user.is_active %}
+            <p>Profile is active.</p>
+        {% endif %}
+    </dl>
+    <div>
+        <a class="btn btn-primary mr-2" type="button" href="{% url 'profile_change' %}">Profile settings</a>
+        <a class="btn btn-info" type="button" href="{% url 'user_adverts' %}">My adverts</a>
+        <a class="btn btn-success" type="button" href="{% url 'add_bulletin' %}">Add advert</a>
+    </div>
+{% endblock %}

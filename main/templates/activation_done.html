@@ -1,0 +1,16 @@
+{% extends "layout/base.html" %}
+
+{% block title %}User activated{% endblock %}
+
+{% block rubrics_navigation %} {% endblock %}
+
+{% block headline %}Profil activation done{% endblock %}
+
+{% block content %}
+<h4>
+    {{user.username}} profile was successfully activated.
+</h4>
+<div class="d-grid gap-2 col-6 mx-auto">
+    <a class="btn btn-primary" type="button" href="{% url 'login' %}">Log in</a>
+</div>
+{% endblock %}

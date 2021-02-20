@@ -1,0 +1,4 @@
+Hello {{user.username}} you have registrated on our bulletin board site.
+To activate your profile please follow the following link:
+{{ host }}{% url 'registration_activate' sign=sign %} 
+Thank you for choosing our service.

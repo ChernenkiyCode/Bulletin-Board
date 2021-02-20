@@ -1,0 +1,16 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Bad signature{% endblock %}
+
+{% block rubrics_navigation %} {% endblock %}
+
+{% block headline %}Registration failed{% endblock %}
+
+{% block content %}
+    <h4>
+        Registration of {{user.username}} user failed. Please try again.
+    </h4>
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <a class="btn btn-primary" type="button" href="{% url 'registration' %}">Try again</a>
+    </div>
+{% endblock %}

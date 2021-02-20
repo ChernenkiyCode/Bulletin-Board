@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<!--{% load static %}-->
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
+
+    <title>{% block title %}Main page{% endblock %}</title>
+</head>
+<div class="bg-dark text-white row">
+    <h1 class="text-center display-3 my-2">Bulletin board</h1>
+    {% block navbar %} 
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+           <a class="navbar-brand display-3" href="{% url 'index' %}">Bulletin board</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        {% if user.is_authenticated %}
+                            <a class="nav-link active" aria-current="page" href="{% url 'add_bulletin' %}">Add bulletin</a>
+                        {% else %}
+                            <a class="nav-link" aria-current="page" href="{% url 'index' %}">Home</a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        {% if user.is_authenticated %}
+                            <a class="nav-link" href="{% url 'logout' %}">Log out</a>
+                        {% else %}
+                            <a class="nav-link" href="{% url 'login' %}">Log in</a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Profile
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'profile' pk=user.pk %}">My profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'user_adverts' %}">My adverts</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'profile_change' %}">Profile settings</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'other' page='about' %}">About</a>
+                    </li>
+                </ul>
+                <form class="d-flex" action="{% url 'by_rubric' 2 %}">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav> 
+    {% endblock%}
+    {% block rubrics_navigation %}
+            <div class="col mt-4">
+                <h5>Rubrics navigation</h5>
+                <div class="list-group">
+                    {% for rubric in rubrics %} 
+                        {% ifchanged rubric.super_rubric.pk %} 
+                            <a href="#" class="list-group-item list-group-item-action dark-bg">
+                                <h4>{{rubric.super_rubric.name}}</h4>
+                            </a>
+                        {% endifchanged %}
+                            <a href="{% url 'by_rubric' rubric.pk %}" class="list-group-item list-group-item-action dark-bg">{{rubric.name}}</a>
+                    {% endfor %}
+                </div>
+            </div> 
+    {% endblock %}
+    <div class="col-10 container mt-4">
+        <h1 class="mb-3 text-center display-5">{% block headline %}Home page{% endblock %}</h1>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show my-1" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% block content %}
+        {% endblock %} 
+    </div>
+    {% block comments %}
+    {% endblock %}
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+    -->
+</body>
+    <footer class="mt-4 bg-primary text-white container">
+        <!--<h1 class="text-center display-6">Bulletin board</h1>-->
+        <p class="text-center fw-light mt-3">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+            aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+        <p class="text-center">&copy;All rights reserverd</p>              
+    </footer>
+</div>
+</html>

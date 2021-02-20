@@ -1,0 +1,51 @@
+{% extends "layout/base.html" %}
+{% load thumbnail %}
+{% load static %}
+
+{% block title %}
+    {% if keyword %}
+        {{ keyword }}
+    {% else %}
+        {{ rubric }}
+    {% endif %}
+{% endblock %}
+
+{% block headline %}
+    {% if keyword %}
+        Search results for {{ keyword }}
+    {% else %}
+        {{ rubric }}
+    {% endif %}
+{% endblock %}
+{% block content %}
+{% if bulletins %}
+        {% for bulletin in bulletins %}
+            <div class="my-3 bg-dark row">
+                <div class="col-3">
+                    {% if bulletin.image %}
+                        <img class="w-100" src="{{ bulletin.image|thumbnail_url:'default' }}">
+                    {% else %}
+                        <img class="w-100" src="{% static 'main/empty.png' %}">
+                    {% endif %}
+                </div>
+                <div class="col p-2">
+                    <div class="text-center">
+                        <h3>
+                            <a href="{% url 'detail' 'by_rubric' bulletin.pk %}{{ all }}">
+                                {{bulletin.title}}
+                            </a>
+                        </h3>
+                    </div>
+                    <p>{{bulletin.content|slice:440}}</p>
+                    <p>{{bulletin.price}}$</p>
+                </div>
+            </div>
+        {% endfor %}
+{% else %}
+            {% if keyword %}
+                <h3>By your request nothing was found.</h3>
+            {% else %}
+                <h3>This rubric is empty by now.</h3>
+            {% endif %}
+{% endif %}
+{% endblock %}

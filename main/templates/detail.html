@@ -1,0 +1,74 @@
+{% extends "layout/base.html" %}
+{% load thumbnail %}
+{% load static %}
+
+{% block title %}{{bulletin.title}}{% endblock %}
+
+{% block headline %}
+    {{bulletin.title}}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% if bulletin.image %} 
+            <div class="col-6">
+                <img src="{{ bulletin.image.url }}" class="w-100">
+            </div> 
+        {% endif %}
+        <div class="col d-flex align-items-center">
+            <div>
+                <p>
+                    {{ bulletin.content }}
+                </p>
+                <p class="font-italic">Price: {{bulletin.price}}$</p>
+                <p class="font-weight-light">{{bulletin.contacts}}</p>
+            </div>
+        </div>
+        <div class="d-flex justify-content-around mt-3">
+            {% for ai in ais %} 
+                <div>
+                    <img class="additional-image" src="{{ ai.image.url }}">
+                </div> 
+            {% endfor %}
+        </div>
+    </div>
+    {% if from_view == 'index' %}
+        <a href="{% url 'index' %}" type="button" class="btn btn-warning mt-3">Back</a>
+    {% elif from_view == 'by_rubric' %}
+        <a href="{% url 'by_rubric' pk=bulletin.rubric.pk %}{{ all }}" type="button" class="btn btn-warning mt-3">Back</a>
+    {% elif from_view == 'user_adverts' %}
+        <a href="{% url 'user_adverts' %}" type="button" class="btn btn-warning mt-3">Back</a>
+        <a href="{% url 'update_bulletin' bulletin.pk %}" type="button" class="btn btn-primary mt-3">Update</a>
+        <a href="{% url 'delete_bulletin' bulletin.pk %}" type="button" class="btn btn-danger mt-3">Delete</a>
+    {% endif %}
+{% endblock %}
+{% block comments %}
+    {% if user.is_authenticated %}
+    <div class="row my-4">
+        <div class="col-md-6 mx-auto">
+            <h4 class="mb-4">Leave a comment.</h4>
+            <form method="POST" action="">{% csrf_token %}
+                <div class="form-group">
+                    {{form.as_p}}
+                </div>
+                <button class="btn btn-primary" type="submit" value="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+    {% if comments %}
+    {% for comment in comments %}
+    <div class="card text-center my-2">
+        <div class="card-header bg-dark">
+            {{comment.author.username}}
+        </div>
+        <div class="card-body bg-dark">
+            <p class="card-text">{{comment.content}}</p>
+        </div>
+        <div class="card-footer text-muted bg-dark">
+            {{comment.created_at}}
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+{% endblock %}

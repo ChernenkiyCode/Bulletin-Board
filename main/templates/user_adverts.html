@@ -1,0 +1,44 @@
+{% extends "layout/base.html" %}
+{% load thumbnail %}
+{% load static %}
+
+{% block title %}
+    My adverts
+{% endblock %}
+
+{% block headline %}
+    My adverts
+{% endblock %}
+
+{% block search_form %}
+<form class="d-flex" action="{% url 'by_rubric' 1%}">
+    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
+{% endblock %}
+{% block content %}
+{% for bulletin in bulletins %}
+<div class="my-3 bg-dark row">
+    <div class="col-3">
+        {% if bulletin.image %}
+        <img class="w-100" src="{{ bulletin.image|thumbnail_url:'default' }}">
+        {% else %}
+        <img class="w-100" src="{% static 'main/empty.png' %}">
+        {% endif %}
+    </div>
+    <div class="col p-2">
+        <div class="text-center">
+            <h3>
+                <a href="{% url 'detail' 'user_adverts' bulletin.pk %}{{ all }}">
+                    {{bulletin.title}}
+                </a>
+            </h3>
+        </div>
+        <p>{{bulletin.content|slice:440}}</p>
+        <p>{{bulletin.price}}$</p>
+        <a href="{% url 'update_bulletin' bulletin.pk %}" type="button" class="btn btn-primary mt-3">Update</a>
+        <a href="{% url 'delete_bulletin' bulletin.pk %}" type="button" class="btn btn-danger mt-3">Delete</a>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
