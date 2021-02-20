@@ -1,1 +1,7 @@
 smtpdata.sh
+
+/main/__pycache__
+
+/main/migrations
+
+/bboard/__pycache__
